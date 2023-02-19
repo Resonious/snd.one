@@ -1,5 +1,7 @@
 import { getAssetFromKV, NotFoundError } from '@cloudflare/kv-asset-handler'
-const qrcode = require('qrcode-terminal');
+
+// @ts-ignore
+import qrcode from 'qrcode-terminal';
 
 export { Pipe } from './pipe';
 
@@ -110,6 +112,23 @@ async function handleBrowserContentRequest(request: Request, env: SndEnv, ctx: E
     return rewriter.transform(pipeHtml);
   }
 
+  // JS /vars.js request
+  if (path === '/vars.js') {
+    const vars = {
+      PUSH_PUBLIC_KEY: env.PUSH_PUBLIC_KEY,
+    };
+    let js = '';
+    for (const [key, value] of Object.entries(vars)) {
+      js += `export const ${key} = ${JSON.stringify(value)};\n`;
+    }
+    return new Response(js, {
+      status: 200,
+      headers: {
+        'content-type': 'application/javascript',
+      }
+    }); 
+  }
+
   // Regular asset request
   else {
     try {
@@ -117,7 +136,6 @@ async function handleBrowserContentRequest(request: Request, env: SndEnv, ctx: E
     } catch (e) {
       if (e instanceof NotFoundError) {
         return new Response('Path not found: ' + path, { status: 404 });
-
       } else if (e instanceof Error) {
         return new Response(e.message || e.toString(), { status: 500 });
       }

@@ -7,3 +7,9 @@ site = { bucket = "./frontend" }
 bindings = [
   {name = "PIPE", class_name = "Pipe"}
 ]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["Pipe"]
+
+# Secrets: PUSH_PUBLIC_KEY, PUSH_PRIVATE_KEY

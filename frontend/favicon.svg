@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="9.6457672mm"
+   height="9.6457634mm"
+   viewBox="0 0 9.6457672 9.6457634"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2">
+    <rect
+       x="121.54003"
+       y="50.764771"
+       width="49.297413"
+       height="56.948914"
+       id="rect236" />
+  </defs>
+  <g
+     id="layer1"
+     transform="translate(-42.774034,-21.567764)">
+    <rect
+       style="fill:#a8a8a8;fill-opacity:1;stroke-width:0.294536;stroke-linejoin:round"
+       id="rect2476"
+       width="9.6457644"
+       height="9.6457644"
+       x="42.774033"
+       y="21.567764"
+       ry="4.8228822" />
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,12.654346,6.4838512)"
+       id="text234"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Noto Sans Bengali';-inkscape-font-specification:'Noto Sans Bengali, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;shape-inside:url(#rect236);fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="121.53906"
+         y="86.15625"
+         id="tspan2660">s</tspan></text>
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke-width:0.264999;stroke-linejoin:round;stroke-dasharray:none"
+       id="rect2540"
+       width="1.2655286"
+       height="1.2938457"
+       x="51.131649"
+       y="-18.703932"
+       ry="0"
+       transform="rotate(45)" />
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke-width:0.264999;stroke-linejoin:round;stroke-dasharray:none"
+       id="rect2540-6"
+       width="1.2655286"
+       height="1.2938457"
+       x="51.703621"
+       y="-12.494854"
+       ry="0"
+       transform="rotate(45)" />
+  </g>
+</svg>
