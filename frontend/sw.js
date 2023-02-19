@@ -51,7 +51,8 @@ async function openLink(notification) {
 
   for (const client of clients) {
     const clientURL = new URL(client.url, 'https://snd.one');
-    if (clientURL.pathname === url.pathname) {
+    if (clientURL.pathname === url.pathname && client.navigate) {
+      client.navigate(url.toString());
       return client.focus();
     }
   }
