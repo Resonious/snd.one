@@ -10,6 +10,7 @@ export { Pipe } from './pipe';
  *****************************************/
 // @ts-ignore
 import manifestJSON from '__STATIC_CONTENT_MANIFEST'
+import { genkeys } from './push';
 const assetManifest = JSON.parse(manifestJSON)
 
 // @ts-ignore
@@ -29,6 +30,16 @@ function assetOptions(env, rest) {
 export default {
   async fetch(request: Request, env: SndEnv, ctx: ExecutionContext) {
     if (request.method === 'POST') {
+      if (request.url.endsWith('/_genkeys')) {
+        const keys = await genkeys();
+        return new Response(JSON.stringify(keys), { status: 200 });
+      }
+
+      const action = request.headers.get('snd-action');
+      if (action) {
+        return await handleSubUnsub(action, request, env, ctx);
+      }
+
       return await handlePipeSend(request, env, ctx);
     } else {
       return await handleBrowserContentRequest(request, env, ctx);
@@ -36,23 +47,48 @@ export default {
   },
 };
 
+// Handles subscribe/unsubscribe requests from the browser
+async function handleSubUnsub(action: string, request: Request, env: SndEnv, ctx: ExecutionContext) {
+  const url = new URL(request.url);
+  const path = cleanPathname(url);
+
+  const pipe = pipeFromPath(path, env);
+
+  if (action === 'subscribe') {
+    var pipeURL = 'https://pipe/subscribe';
+  } else if (action === 'unsubscribe') {
+    var pipeURL = 'https://pipe/unsubscribe';
+  } else {
+    return new Response('Invalid action', { status: 400 });
+  }
+
+  return await pipe.fetch(pipeURL, {
+    method: 'POST',
+    body: request.body,
+    headers: request.headers,
+  });
+}
+
 // Handles POST requests. All POSTs will just send through a pipe
 async function handlePipeSend(request: Request, env: SndEnv, ctx: ExecutionContext) {
   const url = new URL(request.url);
   const path = cleanPathname(url);
   const pipe = pipeFromPath(path, env);
 
+  const pipeURL = new URL(request.url);
+  pipeURL.pathname = `/p${path}`;
+
+  const pipeHeaders = new Headers(request.headers);
+  pipeHeaders.append('snd-pipe-url', pipeURL.toString());
+
   const pipeResponse = await pipe.fetch('https://pipe/send', {
     method: 'POST',
     body: request.body,
-    headers: request.headers,
+    headers: pipeHeaders,
   });
   if (pipeResponse.status >= 300) {
     throw new Error('Pipe send failed');
   }
-
-  // Repurpose 'url' into the URL to access the pipe
-  url.pathname = `/p${path}`;
 
   const { readable, writable } = new TransformStream();
 
@@ -61,9 +97,9 @@ async function handlePipeSend(request: Request, env: SndEnv, ctx: ExecutionConte
     const textEncoder = new TextEncoder();
 
     const writer = writable.getWriter();
-    writer.write(textEncoder.encode(url.toString() + "\n"));
+    writer.write(textEncoder.encode(pipeURL.toString() + "\n"));
 
-    qrcode.generate(url.toString(), { small: true }, (qr: string) => {
+    qrcode.generate(pipeURL.toString(), { small: true }, (qr: string) => {
       writer.write(textEncoder.encode(qr));
       writer.close();
       resolve();

@@ -47,6 +47,12 @@ function subscribe(registration) {
       });
 
       console.log('New subscription', newSubscription);
+      await fetch(location.href, {
+        method: 'POST',
+        headers: { 'snd-action': 'subscribe', },
+        body: JSON.stringify(newSubscription),
+      });
+
       button.textContent = 'Subscribed! Click again to unsubscribe';
       button.onclick = unsubscribe(registration);
       button.disabled = false;
@@ -71,7 +77,14 @@ function unsubscribe(registration) {
 
     const subscription = await registration.pushManager.getSubscription();
     if (subscription) {
-      await subscription.unsubscribe();
+      await Promise.all([
+        fetch(location.href, {
+          method: 'POST',
+          headers: { 'snd-action': 'unsubscribe', },
+          body: JSON.stringify(subscription),
+        }),
+        subscription.unsubscribe(),
+      ]);
     }
 
     button.textContent = 'Unsubscribed. Click again to re-subscribe';
