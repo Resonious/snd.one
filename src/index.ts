@@ -1,4 +1,5 @@
 import { getAssetFromKV, NotFoundError } from '@cloudflare/kv-asset-handler'
+const qrcode = require('qrcode-terminal');
 
 export { Pipe } from './pipe';
 
@@ -47,7 +48,25 @@ async function handlePipeSend(request: Request, env: SndEnv, ctx: ExecutionConte
   // Repurpose 'url' into the URL to access the pipe
   url.pathname = `/p${path}`;
 
-  return new Response(url.toString(), {
+  const { readable, writable } = new TransformStream();
+
+  // Write QR code to response in background
+  const promise = new Promise<void>((resolve, _reject) => {
+    const textEncoder = new TextEncoder();
+
+    const writer = writable.getWriter();
+    writer.write(textEncoder.encode(url.toString() + "\n"));
+
+    qrcode.generate(url.toString(), { small: true }, (qr: string) => {
+      writer.write(textEncoder.encode(qr));
+      writer.close();
+      resolve();
+    });
+  });
+
+  // Send response headers right away
+  ctx.waitUntil(promise);
+  return new Response(readable, {
     status: 200,
     headers: {
       'content-type': 'text/plain',
@@ -106,6 +125,6 @@ function cleanPathname(url: URL) {
 function pipeFromPath(path: string, env: SndEnv) {
   // To avoid mistakes, ignore /p/ prefixes
   const pipeName = path.replace(/^\/p\//, '/');
-  const pipeId = env.PIPE.idFromName(path);
+  const pipeId = env.PIPE.idFromName(pipeName);
   return env.PIPE.get(pipeId);
 }
