@@ -29,15 +29,15 @@ function assetOptions(env, rest) {
 
 export default {
   async fetch(request: Request, env: SndEnv, ctx: ExecutionContext) {
+    const action = request.headers.get('snd-action');
+    if (action) {
+      return await handleAction(action, request, env, ctx);
+    }
+
     if (request.method === 'POST') {
       if (request.url.endsWith('/_genkeys')) {
         const keys = await genkeys();
         return new Response(JSON.stringify(keys), { status: 200 });
-      }
-
-      const action = request.headers.get('snd-action');
-      if (action) {
-        return await handleSubUnsub(action, request, env, ctx);
       }
 
       return await handlePipeSend(request, env, ctx);
@@ -48,7 +48,7 @@ export default {
 };
 
 // Handles subscribe/unsubscribe requests from the browser
-async function handleSubUnsub(action: string, request: Request, env: SndEnv, ctx: ExecutionContext) {
+async function handleAction(action: string, request: Request, env: SndEnv, ctx: ExecutionContext) {
   const url = new URL(request.url);
   const path = cleanPathname(url);
 
@@ -58,12 +58,14 @@ async function handleSubUnsub(action: string, request: Request, env: SndEnv, ctx
     var pipeURL = 'https://pipe/subscribe';
   } else if (action === 'unsubscribe') {
     var pipeURL = 'https://pipe/unsubscribe';
+  } else if (action === 'check') {
+    var pipeURL = 'https://pipe/check';
   } else {
     return new Response('Invalid action', { status: 400 });
   }
 
   return await pipe.fetch(pipeURL, {
-    method: 'POST',
+    method: request.method,
     body: request.body,
     headers: request.headers,
   });

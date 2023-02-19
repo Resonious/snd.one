@@ -18,6 +18,19 @@ export class Pipe implements DurableObject {
     // Self destruct after 24 hours of inactivity
     this.state.storage.setAlarm(Date.now() + 24 * 60 * 60 * 1000);
 
+    // POST /check (doesn't actually change any data..)
+    if (request.method === 'POST' && url.pathname === '/check') {
+      const [subscription, subscriptions] = await Promise.all([
+        request.json().then(x => x as Subscription),
+        this.state.storage.get<Record<string, Subscription>>('subscriptions').then(x => x ?? {}),
+      ]);
+      if (subscription && subscriptions[subscription.endpoint]) {
+        return new Response('{"subscribed":true}', { status: 200 });
+      } else {
+        return new Response('{"subscribed":false}', { status: 200 });
+      }
+    }
+
     // POST /subscribe
     if (request.method === 'POST' && url.pathname === '/subscribe') {
       const [subscription, subscriptions] = await Promise.all([

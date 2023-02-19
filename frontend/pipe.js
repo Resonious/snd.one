@@ -13,14 +13,22 @@ async function main() {
 
     const subscription = await registration.pushManager.getSubscription();
 
-    if (subscription === null) {
-      button.textContent = 'Get notifications for this snd';
-      button.onclick = subscribe(registration);
-    } else {
-      button.textContent = 'Stop notifications for this snd';
-      button.onclick = unsubscribe(registration);
+    if (subscription !== null) {
+      const { subscribed } = await fetch(location.href, {
+        method: 'POST',
+        headers: { 'snd-action': 'check', },
+        body: JSON.stringify(subscription),
+      }).then(r => r.json());
+
+      if (subscribed) {
+        button.textContent = 'Stop notifications for this snd';
+        button.onclick = unsubscribe(registration);
+        return;
+      }
     }
 
+    button.textContent = 'Get notifications for this snd';
+    button.onclick = subscribe(registration);
   } catch (e) {
     showError(JSON.stringify(e));
   }
@@ -41,12 +49,12 @@ function subscribe(registration) {
     button.disabled = true;
 
     try {
-      const newSubscription = await registration.pushManager.subscribe({
+      const subscription = await registration.pushManager.getSubscription();
+      const newSubscription = subscription ?? await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlB64ToUint8Array(PUSH_PUBLIC_KEY),
       });
 
-      console.log('New subscription', newSubscription);
       await fetch(location.href, {
         method: 'POST',
         headers: { 'snd-action': 'subscribe', },
@@ -83,7 +91,6 @@ function unsubscribe(registration) {
           headers: { 'snd-action': 'unsubscribe', },
           body: JSON.stringify(subscription),
         }),
-        subscription.unsubscribe(),
       ]);
     }
 
