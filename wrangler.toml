@@ -2,3 +2,8 @@ name = "snd"
 main = "./src/index.ts"
 compatibility_date = "2022-05-03"
 site = { bucket = "./frontend" }
+
+[durable_objects]
+bindings = [
+  {name = "PIPE", class_name = "Pipe"}
+]

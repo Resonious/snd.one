@@ -1,0 +1,3 @@
+interface SndEnv {
+  PIPE: DurableObjectNamespace,
+}
