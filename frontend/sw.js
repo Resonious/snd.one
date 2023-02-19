@@ -14,12 +14,12 @@ self.addEventListener('push', function(event) {
     return;
   }
 
-  const { url, text } = JSON.parse(event.data.text());
+  const payload = JSON.parse(event.data.text());
 
   let title = 'snd.one';
-  let body = text;
+  let body = payload.text;
   try {
-    const jsonBody = JSON.parse(text);
+    const jsonBody = JSON.parse(payload.text);
     title = jsonBody.title;
     body = jsonBody.text ?? jsonBody.contents ?? jsonBody.body ?? jsonBody.message ?? jsonBody;
   } catch (_e) {
@@ -28,9 +28,9 @@ self.addEventListener('push', function(event) {
 
   event.waitUntil(
     self.registration.showNotification(title, {
-      tag: url,
+      tag: payload.url ?? 'snd.one',
       body,
-      data: { url },
+      data: { url: payload.url },
       ...icons,
     })
   );
@@ -47,6 +47,8 @@ async function openLink(notification) {
   });
 
   notification.close();
+  if (!notification.data.url) return;
+
   const url = new URL(notification.data.url);
 
   for (const client of clients) {

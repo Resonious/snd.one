@@ -13,13 +13,14 @@
 
   <title>REPLACED BY SERVER</title>
   <script type="module" src="/pipe.js"></script>
-  <script id="qrcode-script" defer onload="showQRCode()" src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.js"></script>
+  <script id="qrcode-script" defer onload="showQRCode()" src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.js"></script>
 </head>
 <body>
   <h1>snd.one</h1>
 
   <div>
-    You are watching <code class="pipe-url">POPULATED BY SERVER</code>. Run the following command to send data here:
+    <h2>pipe: <code class="pipe-url">POPULATED BY SERVER</code></h2>
+    <p>On this page, you can subscribe to receive notifications when the following command is run:</p>
     <pre id="curl-example">
       POPULATED BY SERVER
     </pre>
@@ -27,9 +28,11 @@
 
   <button id="subscription-button">LOADING</button>
 
-  <p id="error" style="display: none"></p>
+  <p>Scan QR to receive notifications on your phone.</p>
 
   <canvas id="qr"></canvas>
+
+  <p id="error" style="display: none"></p>
 
   <pre id="pipe-data">
     POPULATED BY SERVER

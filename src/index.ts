@@ -149,7 +149,7 @@ async function handleBrowserContentRequest(request: Request, env: SndEnv, ctx: E
       } })
       .on('code', { element: e => {
         const clazz = e.getAttribute('class');
-        if (clazz === 'pipe-url') e.setInnerContent(url.toString());
+        if (clazz === 'pipe-url') e.setInnerContent(url.pathname);
       } });
 
     return rewriter.transform(pipeHtml);

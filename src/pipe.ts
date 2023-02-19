@@ -39,6 +39,13 @@ export class Pipe implements DurableObject {
       ]);
       subscriptions[subscription.endpoint] = subscription;
       await this.state.storage.put('subscriptions', subscriptions);
+
+      // Send the current data to the new subscriber
+      this.state.storage.get<string>('data').then(async text => {
+        if (!text) return;
+        await push(subscription, this.env, { text });
+      });
+
       return new Response('', { status: 204 });
     }
 
@@ -82,7 +89,7 @@ export class Pipe implements DurableObject {
         let modified = false;
         for (const k in subscriptions) {
           const result = await push(subscriptions[k], this.env, {
-            url: pipeURL ?? '',
+            url: pipeURL,
             text,
           });
 

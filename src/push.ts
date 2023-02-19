@@ -2,7 +2,7 @@
 import { ApplicationServerKeys, generatePushHTTPRequest } from 'webpush-webcrypto';
 
 export type PushArgs = {
-  url: string,
+  url?: string,
   text: string,
 };
 

@@ -15,5 +15,17 @@
 </head>
 <body>
   <h1>snd.one</h1>
+
+  <div>
+    Try this:
+    <pre id="example"></pre>
+  </div>
+
+  <script>
+    const example = document.getElementById('example');
+    const suggestedId = crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
+
+    example.textContent = `curl -d "Hello, world!" ${window.location.href}${suggestedId}`;
+  </script>
 </body>
 </html>
