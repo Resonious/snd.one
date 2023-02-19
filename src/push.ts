@@ -14,7 +14,7 @@ export async function push(subscription: object, env: SndEnv, args: PushArgs) {
 
   const { headers, body, endpoint } = await generatePushHTTPRequest({
     applicationServerKeys: keys,
-    payload: JSON.stringify(args.text),
+    payload: JSON.stringify(args),
     target: subscription,
     adminContact: 'mailto:nigel@baillie.dev',
     ttl: 30,
