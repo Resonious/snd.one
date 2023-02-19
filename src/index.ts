@@ -143,6 +143,11 @@ async function handleBrowserContentRequest(request: Request, env: SndEnv, ctx: E
         const id = e.getAttribute('id');
         if (id === 'pipe-data') e.setInnerContent(await pipeData);
         else if (id === 'pipe-headers') e.setInnerContent(await pipeHeaders);
+        else if (id === 'curl-example') e.setInnerContent(curlExample(path));
+      } })
+      .on('code', { element: e => {
+        const clazz = e.getAttribute('class');
+        if (clazz === 'pipe-url') e.setInnerContent(url.toString());
       } });
 
     return rewriter.transform(pipeHtml);
@@ -190,4 +195,8 @@ function pipeFromPath(path: string, env: SndEnv) {
   const pipeName = path.replace(/^\/p\//, '/');
   const pipeId = env.PIPE.idFromName(pipeName);
   return env.PIPE.get(pipeId);
+}
+
+function curlExample(path: string) {
+  return `curl -d "My message" https://snd.one${path.replace(/^\/p/, '')}`;
 }
