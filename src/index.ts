@@ -42,8 +42,12 @@ async function handlePipeSend(request: Request, env: SndEnv, ctx: ExecutionConte
 
   const pipeResponse = await pipe.fetch('https://pipe/send', {
     method: 'POST',
-    body: request.body
+    body: request.body,
+    headers: request.headers,
   });
+  if (pipeResponse.status >= 300) {
+    throw new Error('Pipe send failed');
+  }
 
   // Repurpose 'url' into the URL to access the pipe
   url.pathname = `/p${path}`;
@@ -89,6 +93,7 @@ async function handleBrowserContentRequest(request: Request, env: SndEnv, ctx: E
     // If there was no static page at this path, we treat it as a pipe since they can have any name
     const pipe = pipeFromPath(path, env);
     const pipeData = pipe.fetch('https://pipe/data').then(r => r.text());
+    const pipeHeaders = pipe.fetch('https://pipe/headers').then(r => r.text());
 
     const pipeHtmlURL = new URL(request.url);
     pipeHtmlURL.pathname = '/pipe.html';
@@ -96,7 +101,11 @@ async function handleBrowserContentRequest(request: Request, env: SndEnv, ctx: E
     const pipeHtml = await getAssetFromKV(evt, assetOptions(env, undefined));
     const rewriter = new HTMLRewriter()
       .on('title', { element: e => { e.setInnerContent(`snd.one ${path}`) } })
-      .on('pre', { element: async e => { e.setInnerContent(await pipeData) } });
+      .on('pre', { element: async e => {
+        const id = e.getAttribute('id');
+        if (id === 'pipe-data') e.setInnerContent(await pipeData);
+        else if (id === 'pipe-headers') e.setInnerContent(await pipeHeaders);
+      } });
 
     return rewriter.transform(pipeHtml);
   }

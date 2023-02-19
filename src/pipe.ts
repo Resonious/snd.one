@@ -18,6 +18,20 @@ export class Pipe implements DurableObject {
     // POST /send
     if (request.method === 'POST' && url.pathname === '/send') {
       this.state.storage.put('data', await request.text());
+
+      const headerLines = [];
+      for (const header of request.headers) {
+        if (header[0].startsWith('cf-')) {
+          if (header[0] === 'cf-ipcountry') {
+            headerLines.push(`x-country: ${header[1]}`);
+          }
+          continue;
+        }
+
+        headerLines.push(`${header[0]}: ${header[1]}`);
+      }
+      this.state.storage.put('headers', headerLines.join("\n"));
+
       return new Response('', { status: 204 });
     }
 
@@ -27,11 +41,18 @@ export class Pipe implements DurableObject {
       return new Response(JSON.stringify(contents));
     }
 
+    // GET /headers
+    if (request.method === 'GET' && url.pathname === '/headers') {
+      const contents = await this.state.storage.get<string>('headers');
+      return new Response(contents ?? '');
+    }
+
     return new Response('Hello from a Durable Object!');
   }
 
   // Self-destruct on alarm!!
   async alarm(): Promise<void> {
+    console.log(`Deleting pipe ${this.state.id}`);
     await this.state.storage.deleteAll();
   }
 }
