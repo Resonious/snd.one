@@ -76,14 +76,26 @@ export class Pipe implements DurableObject {
       this.state.storage.put('headers', headerLines.join("\n"));
 
       // Push notifications to all subscribers
-      this.state.storage.get<Record<string, Subscription>>('subscriptions').then(subscriptions => {
+      this.state.storage.get<Record<string, Subscription>>('subscriptions').then(async subscriptions => {
         if (!subscriptions) return;
+
+        let modified = false;
         for (const k in subscriptions) {
-          push(subscriptions[k], this.env, {
+          const result = await push(subscriptions[k], this.env, {
             url: pipeURL ?? '',
             text,
           });
-          // TODO: maybe unsubscribe ones that fail?
+
+          // This probably means the subscription is no longer valid and we can remove it
+          if (result.status >= 400 && result.status < 500) {
+            console.log('Cleaning up invalid subscription for', pipeURL);
+            delete subscriptions[k];
+            modified = true;
+          }
+        }
+
+        if (modified) {
+          await this.state.storage.put('subscriptions', subscriptions);
         }
       });
 
