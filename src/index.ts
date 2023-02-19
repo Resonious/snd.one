@@ -99,6 +99,7 @@ async function handlePipeSend(request: Request, env: SndEnv, ctx: ExecutionConte
     const textEncoder = new TextEncoder();
 
     const writer = writable.getWriter();
+    writer.write(textEncoder.encode("Visit the following URL to subscribe\n"));
     writer.write(textEncoder.encode(pipeURL.toString() + "\n"));
 
     qrcode.generate(pipeURL.toString(), { small: true }, (qr: string) => {

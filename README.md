@@ -1,19 +1,23 @@
-# Template: worker-typescript
+# snd.one
 
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/worker-typescript)
+"Send one"
 
-A batteries included template for kick starting a TypeScript Cloudflare worker project.
+Extremely simple notifications pipe.
+
+Example: https://snd.one/p/readme-example (replace "readme-example" with any string)
+
+```bash
+# Once subscribed, send a notification:
+curl -d 'Hello, world!' https://snd.one/readme-example
+```
+
+These pipes go away after 24 hours of inactivity.
 
 ## Setup
 
-To create a `my-project` directory using this template, run:
+This project runs on Cloudflare workers.
 
-```sh
-$ npm init cloudflare my-project worker-typescript
-# or
-$ yarn create cloudflare my-project worker-typescript
-# or
-$ pnpm create cloudflare my-project worker-typescript
+```bash
+npm install
+npm run dev
 ```
-
-> **Note:** Each command invokes [`create-cloudflare`](https://www.npmjs.com/package/create-cloudflare) for project creation.
