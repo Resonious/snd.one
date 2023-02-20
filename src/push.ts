@@ -3,6 +3,7 @@ import { ApplicationServerKeys, generatePushHTTPRequest } from 'webpush-webcrypt
 
 export type PushArgs = {
   url?: string,
+  link?: string,
   text: string,
 };
 

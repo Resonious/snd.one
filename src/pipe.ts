@@ -67,15 +67,19 @@ export class Pipe implements DurableObject {
 
       const headerLines = [];
       let pipeURL: string | undefined;
+      let pipeLink: string | undefined;
       for (const header of request.headers) {
         if (header[0].startsWith('cf-') || header[0].startsWith('snd-')) {
+          let skip = true;
           if (header[0] === 'cf-ipcountry') {
             headerLines.push(`x-country: ${header[1]}`);
-          }
-          else if (header[0] === 'snd-pipe-url') {
+          } else if (header[0] === 'snd-pipe-url') {
             pipeURL = header[1];
+          } else if (header[0] === 'snd-link') {
+            pipeLink = header[1];
+            skip = false;
           }
-          continue;
+          if (skip) continue;
         }
 
         headerLines.push(`${header[0]}: ${header[1]}`);
@@ -90,6 +94,7 @@ export class Pipe implements DurableObject {
         for (const k in subscriptions) {
           const result = await push(subscriptions[k], this.env, {
             url: pipeURL,
+            link: pipeLink,
             text,
           });
 

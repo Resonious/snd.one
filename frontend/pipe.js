@@ -8,6 +8,12 @@ async function main() {
   }
 
   try {
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      if (event.data.link) {
+        window.location.hash = event.data.link;
+      }
+    });
+
     const registration = await navigator.serviceWorker.register('/sw.js');
     const button = document.getElementById('subscription-button');
 

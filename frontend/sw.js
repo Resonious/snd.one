@@ -30,7 +30,7 @@ self.addEventListener('push', function(event) {
     self.registration.showNotification(title, {
       tag: payload.url ?? 'snd.one',
       body,
-      data: { url: payload.url },
+      data: { url: payload.url, link: payload.link },
       ...icons,
     })
   );
@@ -50,14 +50,22 @@ async function openLink(notification) {
   if (!notification.data.url) return;
 
   const url = new URL(notification.data.url);
+  const link = notification.data.link;
 
   for (const client of clients) {
     const clientURL = new URL(client.url, 'https://snd.one');
     if (clientURL.pathname === url.pathname && client.navigate) {
-      client.navigate(url.toString());
+      if (link) {
+        client.postMessage({ link: link });
+      } else {
+        client.navigate(url.toString());
+      }
       return client.focus();
     }
   }
 
-  return self.clients.openWindow(url.pathname);
+  const client = await self.clients.openWindow(url.toString());
+  if (link) {
+    client.postMessage({ link: link });
+  }
 }
