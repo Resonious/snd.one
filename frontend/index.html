@@ -10,22 +10,81 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gajraj+One&display=swap" rel="stylesheet">
   <link href="/style.css" rel="stylesheet">
+  <link href="/termynal.css" rel="stylesheet">
+
+  <script defer src="/termynal.min.js"></script>
 
   <title>snd.one</title>
 </head>
 <body>
-  <h1>snd.one</h1>
+  <main>
+    <h1>snd.one</h1>
 
-  <div>
-    Try this:
-    <pre id="example"></pre>
-  </div>
+    <p>
+      Suite of HTTP-based tools. Inspired by request bin and the likes.
+    </p>
+
+    <h2>Inspect live webhooks via terminal (no install required!)</h2>
+
+    <div class="side-by-side">
+      <div id="termynal-listener" data-termynal>
+        <span data-ty="input">curl -L hook.snd.one/can-be-anything</span>
+        <span data-ty>Your URL is https://hook.snd.one/can-be-anything</span>
+        <span data-ty data-ty-delay="8000"></span>
+        <span data-ty data-ty-delay="0">POST /can-be-anything</span>
+        <span data-ty data-ty-delay="0">host: "hook.snd.one"</span>
+        <span data-ty data-ty-delay="0">user-agent: "curl/8.2.1"</span>
+        <span data-ty data-ty-delay="0">accept: "*/*"</span>
+        <span data-ty data-ty-delay="0">content-length: "9"</span>
+        <span data-ty data-ty-delay="0">content-type: "application/x-www-form-urlencoded"</span>
+        <span data-ty data-ty-delay="0"></span>
+        <span data-ty data-ty-delay="0">some data</span>
+        <span data-ty data-ty-delay="0"></span>
+      </div>
+
+      <div id="termynal-sender" data-termynal>
+        <span data-ty="input">curl -Ld 'some data' hook.snd.one/can-be-anything</span>
+        <span data-ty="input"></span>
+      </div>
+    </div>
+
+    <h2>Receive desktop/mobile notifications via HTTP request</h2>
+
+    <div class="side-by-side">
+      <div id="termynal-listener" data-termynal>
+        <span data-ty="input">curl -d 'hey' https://snd.one/can-be-anything</span>
+        <span data-ty data-ty-delay="0">Visit the following URL to subscribe</span>
+        <span data-ty data-ty-delay="0">https://snd.one/p/can-be-anything</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█ ▄▄▄▄▄ ██▄▄ ▀▄▄ █  █▀█ ▄▄▄▄▄ █</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█ █   █ █▀▄  ██ ▀▄▀▄▀ █ █   █ █</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█ █▄▄▄█ █▄▀ █▄  ▄▀█▄▄██ █▄▄▄█ █</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█▄▄▄▄▄▄▄█▄▀▄█ ▀▄█▄█▄▀ █▄▄▄▄▄▄▄█</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█ ▄▀▀▀ ▄▄▀▄ █▄█ ▄█   ███▀ ▄▀▀██</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█ ▄ █▄▀▄▀ ▄▀ ▄█▀▀▀███▄▀ ▀█▀████</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█ ▄ ▄▀▄▄▀   █▀  █▄█▀  █ ▄▀██▀ █</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█▀ ▄ ██▄▀ ███▀   ▄█▄▀ █▄▀ ▄ █▀█</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█ ▀▀▄▀█▄▄ █ █▄█▄ ▀ ▀▀▀█▀▀▀▄ ▀▀█</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█ ▄▀█ ▄▄█▀▀▄▀▄▄   █▀ ▀▀▄ █▄██▄█</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█▄█▄█▄█▄▄  ▀▄▀▀█▀█ █▄ ▄▄▄ ▀▄▄▄█</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█ ▄▄▄▄▄ █ ▄ █▀ ▄▄▄█▄▄ █▄█ ▄▄▀██</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█ █   █ ███ ▄▄▄█▀ ██▄▄▄▄▄▄ ▀▄ █</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█ █▄▄▄█ █▀ ▄ ▄██▄▀█▀▀█ ▄ ▄  ▄▀█</span>
+        <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█▄▄▄▄▄▄▄█▄█▄▄█████▄█▄██▄█▄▄▄███</span>
+      </div>
+    </div>
+  </main>
 
   <script>
-    const example = document.getElementById('example');
-    const suggestedId = crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
+    document.addEventListener('DOMContentLoaded', () => {
+      new Termynal('#termynal-listener', {
+        lineDelay: 100,
+      });
 
-    example.textContent = `curl -d "Hello, world!" ${window.location.href}${suggestedId}`;
+      new Termynal('#termynal-sender', {
+        startDelay: 6000
+      });
+    });
   </script>
 </body>
 </html>

@@ -6,4 +6,4 @@
 bun.lockb
 
 /dist
-/.wrangler/state/v3/cache
+/.wrangler/state
