@@ -1,20 +1,21 @@
 {
-	"private": true,
-	"version": "0.0.0",
-	"scripts": {
-		"deploy": "wrangler publish src/index.ts",
-		"dev": "wrangler dev src/index.ts --local",
-		"test": "vitest",
-		"start-stackblitz": "WRANGLER_SEND_METRICS=false wrangler dev src/index.ts --local"
-	},
-	"devDependencies": {
-		"@cloudflare/workers-types": "*",
-		"vitest": "^0.24.5",
-		"wrangler": "*"
-	},
-	"dependencies": {
-		"@cloudflare/kv-asset-handler": "*",
-		"qrcode-terminal": "^0.12.0",
-		"webpush-webcrypto": "^1.0.3"
-	}
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "deploy": "wrangler publish src/index.ts",
+    "dev": "wrangler dev src/index.ts --local",
+    "test": "vitest",
+    "start-stackblitz": "WRANGLER_SEND_METRICS=false wrangler dev src/index.ts --local"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-s3": "^3.388.0",
+    "@cloudflare/workers-types": "*",
+    "vitest": "^0.24.5",
+    "wrangler": "*"
+  },
+  "dependencies": {
+    "@cloudflare/kv-asset-handler": "*",
+    "qrcode-terminal": "^0.12.0",
+    "webpush-webcrypto": "^1.0.3"
+  }
 }

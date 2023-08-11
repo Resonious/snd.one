@@ -3,6 +3,7 @@
 *-lock.*
 *.lock
 *.log
+bun.lockb
 
 /dist
 /.wrangler/state/v3/cache
