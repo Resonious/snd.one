@@ -8,6 +8,9 @@ body {
 
 main {
   max-width: 2000px;
+  width: 100vw;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -23,4 +26,9 @@ h1 {
   gap: 20px;
 
   width: 100%;
+}
+
+.terminal-container {
+  overflow-x: scroll;
+  max-width: 100%;
 }

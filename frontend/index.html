@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Easy and fast request bin-like service. Inspect HTTP requests in real time from the command line, or send notifications to yourself programmatically. No install required.">
 
   <link rel="icon" type="image/svg" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,34 +22,52 @@
     <h1>snd.one</h1>
 
     <p>
-      Suite of HTTP-based tools. Inspired by request bin and the likes.
+      Suite of HTTP-based tools for programmers. Inspired by request bin and the likes.
+    </p>
+    <p>
+      No installs, no sign-ups. Just use them if they seem helpful.
     </p>
 
-    <h2>Inspect live webhooks via terminal (no install required!)</h2>
+    <h2>Inspect live webhooks via terminal</h2>
+
+    <p>
+      Direct your webhooks to https://hook.snd.one/<em>anything</em>.<br>
+    </p>
+    <p>
+      Curl the same URL to get a live stream of incoming requests.
+    </p>
 
     <div class="side-by-side">
-      <div id="termynal-listener" data-termynal>
-        <span data-ty="input">curl -L hook.snd.one/can-be-anything</span>
-        <span data-ty>Your URL is https://hook.snd.one/can-be-anything</span>
-        <span data-ty data-ty-delay="8000"></span>
-        <span data-ty data-ty-delay="0">POST /can-be-anything</span>
-        <span data-ty data-ty-delay="0">host: "hook.snd.one"</span>
-        <span data-ty data-ty-delay="0">user-agent: "curl/8.2.1"</span>
-        <span data-ty data-ty-delay="0">accept: "*/*"</span>
-        <span data-ty data-ty-delay="0">content-length: "9"</span>
-        <span data-ty data-ty-delay="0">content-type: "application/x-www-form-urlencoded"</span>
-        <span data-ty data-ty-delay="0"></span>
-        <span data-ty data-ty-delay="0">some data</span>
-        <span data-ty data-ty-delay="0"></span>
+      <div class="terminal-container">
+        <div id="termynal-listener" data-termynal>
+          <span data-ty="input">curl -L hook.snd.one/can-be-anything</span>
+          <span data-ty>Your URL is https://hook.snd.one/can-be-anything</span>
+          <span data-ty data-ty-delay="8000"></span>
+          <span data-ty data-ty-delay="0">POST /can-be-anything</span>
+          <span data-ty data-ty-delay="0">host: "hook.snd.one"</span>
+          <span data-ty data-ty-delay="0">user-agent: "curl/8.2.1"</span>
+          <span data-ty data-ty-delay="0">accept: "*/*"</span>
+          <span data-ty data-ty-delay="0">content-length: "9"</span>
+          <span data-ty data-ty-delay="0">content-type: "application/x-www-form-urlencoded"</span>
+          <span data-ty data-ty-delay="0"></span>
+          <span data-ty data-ty-delay="0">some data</span>
+          <span data-ty data-ty-delay="0"></span>
+        </div>
       </div>
 
-      <div id="termynal-sender" data-termynal>
-        <span data-ty="input">curl -Ld 'some data' hook.snd.one/can-be-anything</span>
-        <span data-ty="input"></span>
+      <div class="terminal-container">
+        <div id="termynal-sender" data-termynal>
+          <span data-ty="input">curl -Ld 'some data' hook.snd.one/can-be-anything</span>
+          <span data-ty="input"></span>
+        </div>
       </div>
     </div>
 
     <h2>Receive desktop/mobile notifications via HTTP request</h2>
+
+    <p>
+      Use this service to, for example, get a notification when a long CI job finishes.
+    </p>
 
     <div class="side-by-side">
       <div id="termynal-listener" data-termynal>
@@ -73,6 +92,18 @@
         <span data-ty style="white-space: pre; line-height: 1" data-ty-delay="0">█▄▄▄▄▄▄▄█▄█▄▄█████▄█▄██▄█▄▄▄███</span>
       </div>
     </div>
+
+    <h2>What is all this?</h2>
+
+    <p>
+      Right now it's a hobby project, but it solves real problems that I have during my day job as a web programmer.
+      Many similar services already exist, but most of them are complicated or slow to the point where I'm better off writing a custom script every time.
+      These snd.one utilities aim to be much simpler and much faster.
+    </p>
+
+    <p>
+      Made by <a href="https://github.com/Resonious">Nigel Baillie</a>.
+    </p>
   </main>
 
   <script>
